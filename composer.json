@@ -1,0 +1,12 @@
+{
+    "name": "bilal/php-secure-login",
+    "require": {
+        "zircote/swagger-php": "^4.9",
+        "mikecao/flight": "^3.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bilal\\PhpSecureLogin\\": "src/"
+        }
+    }
+}
