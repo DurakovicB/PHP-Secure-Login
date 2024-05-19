@@ -46,6 +46,10 @@ Flight::route('GET /users', function(){
     }
 });
 
+Flight::route('GET /dashboard', function(){
+    Flight::render('dashboard.html');
+});
+
 Flight::route('POST /login', function(){
         global $conn;
     

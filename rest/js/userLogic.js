@@ -10,7 +10,11 @@ function login() {
             password: md5(password)
         },
         success: function(response) {
-            $('#message').html('<div class="alert alert-success">' + response.message + '</div>');
+            if (response.status == 'success') {
+                window.location.href = '/PHP-Secure-Login/dashboard';
+              } else {
+                alert(response.message);
+              }
         },
         error: function(xhr) {
             }
