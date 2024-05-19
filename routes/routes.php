@@ -47,21 +47,16 @@ Flight::route('GET /users', function(){
 });
 
 Flight::route('POST /login', function(){
-    
-    require('config.php');
-    include_once('config_default.php');
-    
         global $conn;
     
         // Retrieve user inputs from the request
-        $username = Flight::request()->data['username'];
+        $email = Flight::request()->data['email'];
         $password = Flight::request()->data['password'];
-        $password= md5($password);
     
         // Retrieve the user data from the database
-        $sql = "SELECT * FROM users WHERE username = ? ";
+        $sql = "SELECT * FROM users WHERE email = ? ";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('s', $username);
+        $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc(); 
@@ -73,13 +68,7 @@ Flight::route('POST /login', function(){
         }
         else {
             // User login failed
-            $failedAttempts++;
-            $sql = "UPDATE users SET failed_attempts = ? WHERE username = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('is', $failedAttempts, $username);
-            $stmt->execute();
-    
-            Flight::halt(401, json_encode(array('status' => 'error', 'message' => 'Invalid username or password.', 'failed_attempts'=>$failedAttempts)));
+            Flight::halt(401, json_encode(array('status' => 'error', 'message' => 'Invalid username or password')));
     
         }
     });
