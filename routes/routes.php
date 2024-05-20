@@ -46,6 +46,25 @@ Flight::route('GET /users', function(){
     }
 });
 
+Flight::route('GET /userinfo/@id', function($id) {
+    global $conn;
+
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $result=$result->fetch_assoc();
+            Flight::json($result);
+        
+        }
+        else
+            Flight::json(false);
+});
+
+
 Flight::route('GET /dashboard', function(){
     Flight::render('dashboard.html');
 });
@@ -68,7 +87,7 @@ Flight::route('POST /login', function(){
 
         if ($row && ($password==$dbPassword)) {
             // User login successful
-            Flight::json(array('status' => 'success', 'message' => 'User logged in successfully.'));
+            Flight::json(array('id' => $row['id'], 'status' => 'success', 'message' => 'User logged in successfully.'));
         }
         else {
             // User login failed
