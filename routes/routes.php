@@ -69,6 +69,10 @@ Flight::route('GET /dashboard', function(){
     Flight::render('dashboard.html');
 });
 
+Flight::route('GET /register', function(){
+    Flight::render('register.html');
+});
+
 Flight::route('POST /login', function(){
         global $conn;
     
