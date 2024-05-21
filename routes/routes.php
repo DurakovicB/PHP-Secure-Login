@@ -99,4 +99,32 @@ Flight::route('POST /login', function(){
     
         }
     });
+
+    Flight::route('POST /register', function(){
+        global $conn;
+    
+        // Retrieve user inputs from the request
+        $email = Flight::request()->data['email'];
+        $password = Flight::request()->data['password'];
+        $username = Flight::request()->data['username'];
+        $phone_number = Flight::request()->data['phone_number'];
+
+        // Check if username is already taken
+        $sql = "SELECT * FROM users WHERE username = '$username'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            Flight::json(array('status' => 'error', 'message' => 'Username already taken.'));
+            return;
+        }
+
+        // Insert the user data into the database
+        $sql = "INSERT INTO users (username, email, password, phone_number) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ss', $username, $email, $password, $phone_number);
+        $stmt->execute();
+
+        // User registration successful
+        Flight::json(array('status' => 'success', 'message' => 'User registered successfully'));
+        
+    });
 Flight::start();
