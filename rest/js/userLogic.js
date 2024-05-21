@@ -40,6 +40,41 @@ var userLogic = {
     logout: function() {
         localStorage.clear();
         window.location.href = '/PHP-Secure-Login';
+    },
+
+    register: function() {
+        var username = $('#username').val();
+        var email = $('#email').val();
+        var password = $('#password').val();
+        var confirmPassword = $('#confirmPassword').val();
+        var phone_number = $('#phone_number').val();
+
+        if (password != confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        $.ajax({
+            url: 'register',
+            type: 'POST',
+            data: {
+                username: username,
+                email: email,
+                password: md5(password),
+                phone_number: phone_number
+            },
+            success: function(response) {
+                if (response.status == 'success') {
+                    alert('User registered successfully');
+                    window.location.href = '/PHP-Secure-Login';
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr) {
+                console.log('AJAX error: ' + xhr);
+            }
+        });
     }
 
 }
