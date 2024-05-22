@@ -13,7 +13,7 @@ var userLogic = {
             },
             success: function(response) {
                 if (response.status == 'success') {
-                    localStorage.setItem('user_id', response.id);
+                    localStorage.setItem('username', response.username);
                     window.location.href = '/PHP-Secure-Login/dashboard';
                 } else {
                     alert(response.message);
@@ -24,9 +24,9 @@ var userLogic = {
         });
     },
     populateDashboard: function() {
-        var id = localStorage.getItem('user_id');
+        var username = localStorage.getItem('username');
         $.ajax({
-            url: 'userinfo/'+id,
+            url: 'userinfo/'+username,
             type: 'GET',
             success: function(response) {
                 $('#welcome-message').text("Hello, "+response.username +"!");

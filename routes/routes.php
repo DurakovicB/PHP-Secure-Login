@@ -46,12 +46,12 @@ Flight::route('GET /users', function(){
     }
 });
 
-Flight::route('GET /userinfo/@id', function($id) {
+Flight::route('GET /userinfo/@username', function($username) {
     global $conn;
 
-        $sql = "SELECT * FROM users WHERE id = ?";
+        $sql = "SELECT * FROM users WHERE username = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('i', $username);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -91,7 +91,7 @@ Flight::route('POST /login', function(){
 
         if ($row && ($password==$dbPassword)) {
             // User login successful
-            Flight::json(array('id' => $row['id'], 'status' => 'success', 'message' => 'User logged in successfully.'));
+            Flight::json(array('username' => $row['username'], 'status' => 'success', 'message' => 'User logged in successfully.'));
         }
         else {
             // User login failed
