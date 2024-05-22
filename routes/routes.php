@@ -118,9 +118,9 @@ Flight::route('POST /login', function(){
         }
 
         // Insert the user data into the database
-        $sql = "INSERT INTO users (username, email, password, phone_number) VALUES (?, ?)";
+        $sql = "INSERT INTO users (username, email, password, phone_number) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ss', $username, $email, $password, $phone_number);
+        $stmt->bind_param('ssss', $username, $email, $password, $phone_number);
         $stmt->execute();
 
         // User registration successful

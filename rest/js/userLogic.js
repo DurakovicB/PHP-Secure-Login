@@ -66,7 +66,6 @@ var userLogic = {
             success: function(response) {
                 if (response.status == 'success') {
                     alert('User registered successfully');
-                    window.location.href = '/PHP-Secure-Login';
                 } else {
                     alert(response.message);
                 }
@@ -76,5 +75,4 @@ var userLogic = {
             }
         });
     }
-
 }
