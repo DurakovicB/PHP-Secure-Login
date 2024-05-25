@@ -117,11 +117,31 @@ Flight::route('POST /login', function(){
             return;
         }
 
+        // Check if password is valid
+        if (strlen($password) < 8) {
+            Flight::json(array('status' => 'error', 'message' => 'Password must have at least 8 characters.'));
+            return;
+        }
+
+        // Check if email is valid
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            Flight::json(array('status' => 'error', 'message' => 'Invalid email address.'));
+            return;
+        }
+
+        // Check if phone number is already taken
+        $sql = "SELECT * FROM users WHERE phone_number = '$phone_number'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            Flight::json(array('status' => 'error', 'message' => 'Phone number already registered.'));
+            return;
+        }
+
         // Insert the user data into the database
         $sql = "INSERT INTO users (username, email, password, phone_number) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssss', $username, $email, $password, $phone_number);
-        $stmt->execute();
+        $stmt->execute();   
 
         // User registration successful
         Flight::json(array('status' => 'success', 'message' => 'User registered successfully'));
