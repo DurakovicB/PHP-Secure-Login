@@ -129,6 +129,18 @@ Flight::route('POST /login', function(){
             return;
         }
 
+        //check for mx records for the domain
+        $parts = explode('@', $email);
+        $domain = isset($parts[1]) ? $parts[1] : '';
+    
+        $mxhosts=[];
+        if (getmxrr($domain, $mxhosts)) {
+    
+        } else {
+            Flight::json(array('status' => 'error', 'message' => "No domains for the e-mail adress domain."));
+            return;
+        }
+
         // Check if phone number is already taken
         $sql = "SELECT * FROM users WHERE phone_number = '$phone_number'";
         $result = $conn->query($sql);

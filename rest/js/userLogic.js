@@ -49,6 +49,11 @@ var userLogic = {
         var confirmPassword = $('#confirmPassword').val();
         var phone_number = $('#phone_number').val();
 
+        if(password.length < 8){
+            alert('Password must be at least 8 characters long');
+            return;
+        }
+        
         if (password != confirmPassword) {
             alert('Passwords do not match');
             return;
